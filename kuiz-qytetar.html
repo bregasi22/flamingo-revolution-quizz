@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuizi Qytetar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#5b2a44;
+    --flamingo:#f6739c;
+    --flamingo-deep:#e8447a;
+    --coral:#ff9770;
+    --blush:#ffe3ee;
+    --blush-2:#ffd0e3;
+    --lagoon:#2ec4c6;
+    --lagoon-deep:#1a9b9d;
+    --sun:#ffc857;
+    --paper:#fff8f5;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 12% -6%, #ffe9d6 0%, transparent 42%),
+      radial-gradient(circle at 100% 8%, var(--blush-2) 0%, transparent 45%),
+      linear-gradient(180deg, var(--blush) 0%, #fff 60%);
+    color:var(--ink);
+    font-family:'Nunito', sans-serif;
+    min-height:100vh;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:36px 16px 64px;
+  }
+  .stage{
+    width:100%;
+    max-width:640px;
+  }
+  .masthead{
+    text-align:center;
+    margin-bottom:24px;
+  }
+  .flamingo-mark{
+    width:64px; height:64px;
+    margin:0 auto 10px;
+    display:block;
+  }
+  .masthead .eyebrow{
+    font-family:'Nunito', sans-serif;
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--flamingo-deep);
+    display:inline-block;
+    padding:6px 16px;
+    border-radius:999px;
+    margin-bottom:14px;
+    background:#fff;
+    box-shadow:0 2px 0 var(--blush-2);
+  }
+  .masthead h1{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800;
+    font-size:clamp(34px,7vw,50px);
+    line-height:1;
+    letter-spacing:-0.01em;
+    margin:0 0 10px;
+    color:var(--flamingo-deep);
+  }
+  .masthead p{
+    font-size:15.5px;
+    font-weight:600;
+    color:#8a5a72;
+    max-width:420px;
+    margin:0 auto;
+    line-height:1.55;
+  }
+
+  .card{
+    position:relative;
+    background:var(--paper);
+    border:none;
+    border-radius:32px;
+    box-shadow: 0 18px 40px -14px rgba(232,68,122,0.35), 0 2px 0 var(--blush-2) inset;
+    padding:32px 28px 28px;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    top:-40px; right:-40px;
+    width:150px; height:150px;
+    background:radial-gradient(circle, var(--sun) 0%, transparent 70%);
+    opacity:0.55;
+    border-radius:50%;
+    pointer-events:none;
+  }
+
+  /* progress */
+  .progress-row{
+    display:flex; align-items:center; gap:12px;
+    margin-bottom:24px;
+  }
+  .progress-track{
+    flex:1; height:12px; background:var(--blush-2);
+    border-radius:999px; position:relative; overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; background:linear-gradient(90deg, var(--flamingo), var(--coral));
+    width:0%; transition:width .35s ease;
+    border-radius:999px;
+  }
+  .progress-label{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:14px; white-space:nowrap;
+    color:var(--flamingo-deep);
+  }
+
+  .q-tag{
+    font-family:'Nunito', sans-serif;
+    font-size:12.5px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:#fff;
+    background:var(--lagoon);
+    display:inline-block;
+    padding:5px 14px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  .q-text{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:clamp(23px,5vw,28px);
+    line-height:1.28;
+    margin:0 0 22px;
+    color:var(--ink);
+  }
+
+  .options{
+    display:flex; flex-direction:column; gap:14px;
+    margin-bottom:6px;
+  }
+  .opt{
+    display:flex; align-items:center; gap:14px;
+    text-align:left;
+    border:2px solid var(--blush-2);
+    border-radius:20px;
+    background:#fff;
+    padding:18px 20px;
+    font-family:'Nunito', sans-serif;
+    font-size:18.5px;
+    font-weight:700;
+    color:var(--ink);
+    cursor:pointer;
+    transition:transform .12s ease, box-shadow .12s ease, background .12s ease, border-color .12s ease;
+    box-shadow:0 3px 0 var(--blush-2);
+    min-height:56px;
+  }
+  .opt:hover:not(:disabled){
+    transform:translateY(-2px);
+    border-color:var(--flamingo);
+    box-shadow:0 5px 0 var(--blush-2);
+  }
+  .opt:active:not(:disabled){
+    transform:translateY(1px);
+    box-shadow:0 1px 0 var(--blush-2);
+  }
+  .opt-letter{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:16px;
+    border-radius:50%;
+    width:36px;height:36px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    background:var(--blush);
+    color:var(--flamingo-deep);
+  }
+  .opt:disabled{ cursor:default; }
+  .opt.correct{ background:#e6f9ee; border-color:#3fb87f; }
+  .opt.correct .opt-letter{ background:#3fb87f; color:#fff; }
+  .opt.wrong{ background:#fff0ee; border-color:#ff6b5b; }
+  .opt.wrong .opt-letter{ background:#ff6b5b; color:#fff; }
+  .opt.dim{ opacity:0.5; }
+
+  .explain{
+    margin-top:18px;
+    padding:16px 18px;
+    border-radius:18px;
+    background:linear-gradient(135deg, var(--blush), #fff);
+    border:2px solid var(--blush-2);
+    font-size:16.5px;
+    font-weight:600;
+    line-height:1.6;
+    color:#6b3853;
+    display:none;
+  }
+  .explain.show{ display:block; }
+  .explain b{ font-family:'Baloo 2', sans-serif; font-weight:700; color:var(--flamingo-deep); }
+
+  .next-row{ margin-top:18px; text-align:right; display:none; }
+  .next-row.show{ display:block; }
+  .btn{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:16.5px;
+    letter-spacing:0.01em;
+    background:linear-gradient(135deg, var(--flamingo), var(--flamingo-deep));
+    color:#fff;
+    border:none;
+    border-radius:999px;
+    padding:16px 28px;
+    cursor:pointer;
+    box-shadow:0 5px 0 var(--flamingo-deep), 0 10px 20px -8px rgba(232,68,122,0.55);
+    transition:transform .12s ease;
+    min-height:52px;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn:active{ transform:translateY(2px); box-shadow:0 2px 0 var(--flamingo-deep); }
+  .btn.wide{ width:100%; text-align:center; }
+  .btn.secondary{
+    background:#fff; color:var(--flamingo-deep);
+    box-shadow:0 5px 0 var(--blush-2), 0 10px 20px -10px rgba(0,0,0,0.1);
+    border:2px solid var(--blush-2);
+  }
+
+  /* intro / results */
+  .center-col{ text-align:center; }
+  .stat-big{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800;
+    font-size:clamp(56px,14vw,84px);
+    line-height:0.9;
+    margin:6px 0 2px;
+    background:linear-gradient(135deg, var(--flamingo), var(--coral));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .stat-sub{ font-family:'Nunito', sans-serif; font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:0.1em; color:#a8748f; margin-bottom:18px;}
+  .verdict{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:clamp(22px,5vw,28px);
+    margin:4px 0 10px;
+    color:var(--ink);
+  }
+  .verdict-text{
+    font-size:15px; font-weight:600; line-height:1.6; color:#8a5a72; max-width:440px; margin:0 auto 22px;
+  }
+  .stamp{
+    display:inline-block;
+    font-family:'Nunito', sans-serif;
+    font-weight:800;
+    font-size:12.5px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    background:var(--sun);
+    color:#7a4a1a;
+    padding:7px 16px;
+    border-radius:999px;
+    margin-bottom:18px;
+  }
+  .footer-note{
+    text-align:center; margin-top:22px; font-size:12.5px; font-weight:600; color:#b083a0; line-height:1.6;
+  }
+
+  /* flamingo celebration burst */
+  .flamingo-layer{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:999;
+  }
+  .flamingo-pop{
+    position:absolute;
+    bottom:-12vh;
+    line-height:1;
+    filter:drop-shadow(0 6px 12px rgba(232,68,122,0.35)) drop-shadow(0 0 14px rgba(255,255,255,0.85));
+    animation: flamingo-slide 2s linear forwards;
+    will-change: transform, opacity;
+  }
+  @keyframes flamingo-slide{
+    0%{
+      transform: translateY(0) translateX(0) scale(1);
+      opacity:0;
+    }
+    8%{
+      opacity:1;
+    }
+    50%{
+      transform: translateY(-55vh) translateX(var(--bob)) scale(1);
+    }
+    92%{
+      opacity:1;
+    }
+    100%{
+      transform: translateY(-118vh) translateX(0) scale(1);
+      opacity:0;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="masthead">
+    <svg class="flamingo-mark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="32" cy="56" rx="14" ry="3" fill="#e8447a" opacity="0.12"/>
+      <path d="M40 8c-3 0-5 2-5 5 0 2 1 3.5 2.5 4.5-3 1-5.5 3.5-6.5 7l-3 11c-1 4-4 6-7 6.5" stroke="#f6739c" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="41" cy="10.5" r="1.6" fill="#5b2a44"/>
+      <path d="M31 35c-1 5-1 12 1 18M31 35c2 5 1 12-2 18" stroke="#e8447a" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M37 24c4-1 8 0.5 9 3" stroke="#ff9770" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </svg>
+    <span class="eyebrow">Edukim qytetar</span>
+    <h1>Kuizi Qytetar</h1>
+    <p>Sa i mirë-informuar je për gjërat që i jetojmë çdo ditë? Pyetje të thjeshta, pa gjykime.</p>
+  </div>
+
+  <div class="card" id="card"></div>
+
+  <div class="footer-note">Përgjigjet bazohen në gjëra të përditshme, jo në ndonjë parti apo person.</div>
+</div>
+
+<div class="flamingo-layer" id="flamingoLayer"></div>
+
+
+
+<script>
+const QUESTIONS = [
+  {
+    tag: "Uji",
+    q: "Sa orë në ditë duhet të kemi ujë në shtëpi?",
+    options: ["8 orë", "16 orë", "24 orë"],
+    correct: 2,
+    explain: "Uji duhet të rrjedhë 24 orë në ditë, çdo ditë. Nëse vjen vetëm disa orë, kjo tregon problem në shërbim."
+  },
+  {
+    tag: "Natyra",
+    q: "Zvërneci është një vend pranë liqenit të Nartës, afër Vlorës. Në cilën zonë ndodhet?",
+    options: ["Vjosë-Nartë", "Theth", "Prespë"],
+    correct: 0,
+    explain: "Zvërneci ndodhet te zona e mbrojtur Vjosë-Nartë, ku jetojnë shumë zogj dhe ka natyrë të pastër."
+  },
+  {
+    tag: "Kontroll",
+    q: "Kush duhet ta shohë nëse një rrugë apo park po ndërtohet mirë, me paratë tona?",
+    options: ["Vetëm firma që ndërton", "Shteti dhe qytetarët së bashku", "Askush, mjafton besimi"],
+    correct: 1,
+    explain: "Kur shteti dhe qytetarët e shohin bashkë punën, ka më pak gabime dhe më pak keqpërdorim të parave."
+  },
+  {
+    tag: "Fatura",
+    q: "Nëse çmimi i rrymës apo i ujit rritet papritur shumë, çfarë duhet të bëjnë qytetarët?",
+    options: ["Të pyesin e të kërkojnë shpjegim publik", "Të mos thonë asgjë", "Të paguajnë pa e kuptuar pse"],
+    correct: 0,
+    explain: "Kur diçka na prek xhepin, kemi të drejtë të kërkojmë shpjegim: pse u rrit çmimi dhe ku shkojnë paratë."
+  },
+  {
+    tag: "Të drejtat",
+    q: "Cila është mënyra paqësore që kanë qytetarët për të treguar pakënaqësinë?",
+    options: ["Të dalin bashkë e të flasin hapur (protestë paqësore)", "Të heshtin gjithmonë", "Të mos flasin fare me askënd"],
+    correct: 0,
+    explain: "Të dalësh bashkë me të tjerët e të flasësh hapur, pa dhunë, është e drejtë e ligjshme dhe mënyrë e njohur për t'u dëgjuar."
+  },
+  {
+    tag: "Shëndetësia",
+    q: "Në një spital publik, çfarë pritet normalisht nga mjeku?",
+    options: ["Të të trajtojë mirë pa kërkuar 'dhuratë' shtesë", "Të kërkojë para shtesë fshehurazi", "Të mos të shohë fare pa njohje"],
+    correct: 0,
+    explain: "Kujdesi shëndetësor duhet të jetë i drejtë për të gjithë, pa pasur nevojë të japësh 'dorë' apo njohje për t'u trajtuar mirë."
+  },
+  {
+    tag: "Premtime elektorale",
+    q: "Rruga Qukës–Qafë Plloçë u premtua herën e parë nga Sali Berisha, në prag të cilave zgjedhje?",
+    options: ["Zgjedhjeve të 2005", "Zgjedhjeve të 2009", "Zgjedhjeve të 2013"],
+    correct: 1,
+    explain: "U premtua në 2009. Sipas Faktoje.al (organizatë verifikuese faktesh), rruga ka mbetur ndër premtimet elektorale të shkelura nga të dy anët e politikës gjatë viteve."
+  },
+  {
+    tag: "Premtime elektorale",
+    q: "Marrëveshja për pensionet me Italinë, e premtuar për vite nga qeveria Rama për diasporën, u nënshkrua zyrtarisht në cilin vit?",
+    options: ["2013", "2018", "2024"],
+    correct: 2,
+    explain: "U nënshkrua në shkurt 2024, pas rreth një dekade premtimesh gjatë çdo fushate zgjedhore (2013, 2017, 2021, 2023)."
+  },
+  {
+    tag: "Premtime elektorale",
+    q: "Qeveria Rama premtoi se inceneratorët e mbeturinave (Fier, Elbasan, Tiranë) do ta kthenin plehrat në pasuri. Çfarë ndodhi më pas me projektin?",
+    options: ["U shndërrua në skandal korrupsioni, me ish-ministrin e burgosur", "U përfundua siç ishte premtuar, pa probleme", "Nuk u fillua kurrë asnjë punim"],
+    correct: 0,
+    explain: "SPAK e çoi në gjyq ish-ministrin e Mjedisit Lefter Koka, i dënuar për ryshfet lidhur me koncesionin e inceneratorëve. Disa zyrtarë të tjerë u arrestuan ose iu hap hetim."
+  },
+  {
+    tag: "Skandali",
+    q: "Të paktën sa ministra/zëvendëskryeministra të qeverisë Rama janë akuzuar apo dënuar zyrtarisht nga drejtësia (SPAK/GJKKO), jo thjesht 'të thirrur si dëshmitarë'?",
+    options: ["1–2", "5 ose më shumë (p.sh. Lefter Koka, Saimir Tahiri, Arben Ahmetaj, Belinda Balluku, Ilir Beqaj)", "Mbi 20"],
+    correct: 1,
+    explain: "Të paktën 5 janë akuzuar apo dënuar zyrtarisht: Lefter Koka (i dënuar, inceneratorë), Saimir Tahiri (i dënuar për shpërdorim detyre, kanabis), Arben Ahmetaj (i akuzuar, në arrati), Belinda Balluku (e akuzuar, tendera rrugësh) dhe Ilir Beqaj (i akuzuar, dosja 'SASPAC'). Numri total i saktë mbetet i debatueshëm — qeveria e Ramës citon shifra më të ulëta (rreth 10 akuza korrupsioni gjithsej në historinë e SPAK), ndërsa media të tjera përfshijnë edhe ministra të tjerë vetëm 'nën hetim' apo të thirrur si dëshmitarë, pa akuzë formale ende."
+  },
+  {
+    tag: "Verifikim",
+    q: "Kur një politikan (cilido qoftë ai) bën një premtim elektoral, si mund ta kontrollojë qytetari nëse u mbajt vërtet?",
+    options: ["Duke krahasuar me të dhëna zyrtare dhe gazetari verifikuese", "Duke besuar çdo gjë që thotë politikani", "Duke mos u interesuar fare"],
+    correct: 0,
+    explain: "Institucione si INSTAT, ose faqe verifikuese si Faktoje.al, ndihmojnë të krahasosh premtimin me realitetin — pavarësisht se cili parti apo politikan e ka bërë premtimin."
+  },
+  {
+    tag: "Pensionet",
+    q: "Krahasuar me 'minimumin jetik' (kufirin që INSTAT e konsideron nivel varfërie), si qëndron pensioni mesatar?",
+    options: ["Është pothuajse i barabartë me minimumin jetik", "Është dukshëm mbi minimumin jetik", "S'ka lidhje me minimumin jetik"],
+    correct: 0,
+    explain: "Sipas llogaritjeve zyrtare, pensioni mesatar është vetëm pak lekë mbi minimumin jetik — praktikisht shumë pensionistë jetojnë në kufirin e varfërisë."
+  },
+  {
+    tag: "Krahasim",
+    q: "Rroga neto e një deputeti në Kuvend është afërsisht sa herë më e madhe se pensioni mesatar?",
+    options: ["2–3 herë", "10–15 herë", "Pothuajse e njëjtë"],
+    correct: 1,
+    explain: "Deputeti merr rreth 260.000 lekë në muaj (pa dieta e shpërblime shtesë), ndërsa pensioni mesatar është rreth 19.000–20.000 lekë — pra deputeti fiton rreth 13 herë më shumë se një pensionist mesatar."
+  },
+  {
+    tag: "Krahasim",
+    q: "Në 2023, pagat e deputetëve u dyfishuan (nga ~157 mijë në ~310 mijë lekë bruto). Në të njëjtën kohë, sa u rrit pensioni mesatar?",
+    options: ["Edhe ai u dyfishua", "Me disa përqind (rreth 4–7%)", "U ul"],
+    correct: 1,
+    explain: "Ndërkohë që pagat e deputetëve u dyfishuan me një vendim, indeksimi vjetor i pensioneve mbetet zakonisht 4–7%, në linjë me inflacionin — ritmi i rritjes nuk është i njëjtë për të dyja grupet."
+  }
+];
+
+// end of QUESTIONS
+
+let current = 0;
+let score = 0;
+let answered = false;
+
+const card = document.getElementById('card');
+
+function renderIntro(){
+  card.innerHTML = `
+    <div class="center-col">
+      <div class="q-tag">Gati?</div>
+      <div class="q-text">${QUESTIONS.length} pyetje rreth ujit, mjedisit, premtimeve elektorale, skandaleve dhe pensioneve.</div>
+      <button class="btn wide" id="startBtn">Fillo kuizin</button>
+    </div>
+  `;
+  document.getElementById('startBtn').onclick = () => {
+    current = 0; score = 0;
+    renderQuestion();
+  };
+}
+
+function renderQuestion(){
+  answered = false;
+  const item = QUESTIONS[current];
+  const letters = ['A','B','C'];
+  const pct = Math.round((current / QUESTIONS.length) * 100);
+
+  card.innerHTML = `
+    <div class="progress-row">
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div class="progress-label">${current+1} / ${QUESTIONS.length}</div>
+    </div>
+    <div class="q-tag">${item.tag}</div>
+    <div class="q-text">${item.q}</div>
+    <div class="options" id="options">
+      ${item.options.map((opt,i)=>`
+        <button class="opt" data-i="${i}">
+          <span class="opt-letter">${letters[i]}</span>
+          <span>${opt}</span>
+        </button>
+      `).join('')}
+    </div>
+    <div class="explain" id="explain"><b>Info:</b> ${item.explain}</div>
+    <div class="next-row" id="nextRow">
+      <button class="btn" id="nextBtn">${current === QUESTIONS.length-1 ? 'Shiko rezultatin' : 'Pyetja tjetër'}</button>
+    </div>
+  `;
+
+  document.querySelectorAll('.opt').forEach(btn=>{
+    btn.addEventListener('click', ()=> selectOption(parseInt(btn.dataset.i)));
+  });
+  document.getElementById('nextBtn').addEventListener('click', ()=>{
+    current++;
+    if(current >= QUESTIONS.length){ renderResults(); }
+    else { renderQuestion(); }
+  });
+}
+
+function selectOption(i){
+  if(answered) return;
+  answered = true;
+  const item = QUESTIONS[current];
+  const opts = document.querySelectorAll('.opt');
+  opts.forEach((btn,idx)=>{
+    btn.disabled = true;
+    if(idx === item.correct) btn.classList.add('correct');
+    else if(idx === i) btn.classList.add('wrong');
+    else btn.classList.add('dim');
+  });
+  if(i === item.correct){
+    score++;
+    spawnFlamingos();
+  }
+  document.getElementById('explain').classList.add('show');
+  document.getElementById('nextRow').classList.add('show');
+}
+
+function spawnFlamingos(){
+  const layer = document.getElementById('flamingoLayer');
+  const count = 8;
+  for(let n=0; n<count; n++){
+    const f = document.createElement('div');
+    f.className = 'flamingo-pop';
+    f.textContent = '🦩';
+    const leftPos = 5 + Math.random()*85;
+    const bob = (Math.random()*50 - 25);
+    const delay = (n / count) * 0.55 + Math.random()*0.1;
+    const size = 40 + Math.random()*30;
+    const duration = 1.7 + Math.random()*0.5;
+    f.style.left = leftPos + 'vw';
+    f.style.fontSize = size + 'px';
+    f.style.animationDelay = delay + 's';
+    f.style.animationDuration = duration + 's';
+    f.style.setProperty('--bob', bob + 'px');
+    layer.appendChild(f);
+    setTimeout(()=> f.remove(), (delay + duration + 0.2) * 1000);
+  }
+}
+
+function renderResults(){
+  const total = QUESTIONS.length;
+  let verdict, text, stamp;
+  const ratio = score/total;
+  if(ratio >= 0.8){
+    verdict = "Qytetar i informuar";
+    stamp = "E VERIFIKUAR";
+    text = "E njeh mirë terrenin — nga furnizimi me ujë tek mbikëqyrja e projekteve publike. Ky lloj njohurie është ajo që e bën pjesëmarrjen qytetare efektive.";
+  } else if(ratio >= 0.5){
+    verdict = "Në rrugë të mirë";
+    stamp = "NË PROCES";
+    text = "Ke bazat, por ka hapësirë për të thelluar njohuritë mbi transparencën dhe mjedisin. Vazhdo të lexosh e të pyesësh.";
+  } else {
+    verdict = "Fillim i mirë";
+    stamp = "PËR T'U RISHIKUAR";
+    text = "Këto tema prekin jetën e përditshme të gjithsecilit. Rishikimi i shpjegimeve më sipër është një hap i mirë për t'u informuar më shumë.";
+  }
+
+  card.innerHTML = `
+    <div class="center-col">
+      <div class="stat-sub">Rezultati yt</div>
+      <div class="stat-big">${score}/${total}</div>
+      <div class="stamp">${stamp}</div>
+      <div class="verdict">${verdict}</div>
+      <div class="verdict-text">${text}</div>
+      <button class="btn secondary wide" id="retryBtn">Provo përsëri</button>
+    </div>
+  `;
+  document.getElementById('retryBtn').addEventListener('click', renderIntro);
+}
+
+renderIntro();
+</script>
+</body>
+</html>
